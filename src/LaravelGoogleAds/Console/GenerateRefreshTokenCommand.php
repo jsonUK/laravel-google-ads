@@ -40,13 +40,30 @@ class GenerateRefreshTokenCommand extends Command
             return;
         }
 
+        $products = [
+            ['AdWords', AuthorizationService::ADWORDS_API_SCOPE],
+            ['DFP', AuthorizationService::DFP_API_SCOPE],
+            ['AdWords and DFP', AuthorizationService::ADWORDS_API_SCOPE.' '.AuthorizationService::DFP_API_SCOPE],
+        ];
+
+        $api = $this->ask("Select the ads API you\'re using: \n [0] AdWords \n [1] DFP \n [2] Both");
+        if ($api === 2) {
+            $this->info('[OPTIONAL] enter any additional OAuth2 scopes as a space '
+                .'delimited string here (the AdWords and DFP scopes are already '
+                .'included): ');
+        } else {
+            $this->info('[OPTIONAL] enter any additional OAuth2 scopes as a space '
+                .'delimited string here (the '.$products[$api][0].' scope is already included): ');
+        }
+
         $clientId = $config['clientId'];
         $clientSecret = $config['clientSecret'];
 
-        $oauth2 = $authorizationService->oauth2($clientId, $clientSecret, AuthorizationService::REDIRECT_URI);
+        $scopes = $products[$api][1];
+        $oauth2 = $authorizationService->oauth2($clientId, $clientSecret, AuthorizationService::REDIRECT_URI, $scopes);
 
         $this->line(sprintf(
-            "Please sign in to your AdWords account, and open following url:\n%s",
+            "Please sign in to your Google account, and open following url:\n%s",
             $authorizationService->buildFullAuthorizationUri($oauth2, true, [
                 'prompt' => 'consent',
             ])

@@ -37,6 +37,11 @@ return [
          */
     ],
 
+    'DFP' => [
+        'networkCode' => '',
+        'applicationName' => '',
+    ],
+
     'OAUTH2' => [
         /*
          * Required OAuth2 credentials. Uncomment and fill in the values for the

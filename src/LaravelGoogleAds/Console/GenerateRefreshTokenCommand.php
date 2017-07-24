@@ -31,7 +31,7 @@ class GenerateRefreshTokenCommand extends Command
     /**
      * Generate command
      */
-    public function fire()
+    public function handle()
     {
         $authorizationService = $this->authorizationService;
 

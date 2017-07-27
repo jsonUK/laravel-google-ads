@@ -13,6 +13,13 @@ use Google\Auth\Credentials\UserRefreshCredentials;
 
 class DfpService
 {
+    protected $config;
+
+    public function __construct($configOverrides = null)
+    {
+        $this->config = $configOverrides;
+    }
+
     /**
      * Get service.
      *
@@ -34,11 +41,6 @@ class DfpService
      */
     public function session()
     {
-        $session = (new DfpSessionBuilder())
-            ->from($this->configuration())
-            ->withOAuth2Credential($this->oauth2Credentials())
-            ->build();
-
         return (new DfpSessionBuilder())
             ->from($this->configuration())
             ->withOAuth2Credential($this->oauth2Credentials())
@@ -65,6 +67,8 @@ class DfpService
     private function configuration()
     {
         $config = config('google-ads');
+
+        $config = array_merge($config, $this->config);
 
         return new Configuration($config);
     }

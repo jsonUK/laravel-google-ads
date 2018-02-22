@@ -29,14 +29,25 @@ class GenerateRefreshTokenCommand extends Command
     }
 
     /**
-     * Generate command
+     * Execute the console command.
+     *
+     * @version Laravel 5.4+
      */
     public function handle()
+    {
+        $this->fire();
+    }
+
+    /**
+     * Generate command
+     */
+    public function fire()
     {
         $authorizationService = $this->authorizationService;
 
         if (!$config = $this->config()) {
             $this->error('Please provide a valid configuration for Laravel Google Ads');
+
             return;
         }
 
@@ -70,6 +81,7 @@ class GenerateRefreshTokenCommand extends Command
         ));
 
         // Retrieve token
+
         $accessToken = $this->ask('Insert the code you received from Google');
 
         // Fetch auth token
@@ -94,6 +106,32 @@ class GenerateRefreshTokenCommand extends Command
     }
 
     /**
+     * Select scopes
+     *
+     * @return array
+     */
+    private function scopes()
+    {
+        $scopes = [];
+
+        foreach ($this->products() as $product => $scope) {
+            if (!$this->confirm(sprintf('Would you like to activate %s?', $product), true)) {
+                continue;
+            }
+
+            array_push($scopes, $scope);
+        }
+
+        if (!count($scopes)) {
+            $this->error('You have to select at least one scope');
+
+            return $this->scopes();
+        }
+
+        return $scopes;
+    }
+
+    /**
      * Configuration
      *
      * @return bool|array
@@ -108,5 +146,18 @@ class GenerateRefreshTokenCommand extends Command
         }
 
         return $config['OAUTH2'];
+    }
+
+    /**
+     * Products
+     *
+     * @return array
+     */
+    private function products()
+    {
+        return [
+            'AdWords' => AuthorizationService::ADWORDS_API_SCOPE,
+            'DFP' => AuthorizationService::DFP_API_SCOPE,
+        ];
     }
 }

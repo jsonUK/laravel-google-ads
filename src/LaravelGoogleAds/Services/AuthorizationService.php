@@ -110,12 +110,9 @@ class AuthorizationService
             return false;
         }
 
-        return array_merge(
-            [
-                'clientId' => null,
-                'clientSecret' => null,
-            ],
-            $config['OAUTH2']
-        );
+        return array_merge([
+            'clientId' => null,
+            'clientSecret' => null,
+        ], $config['OAUTH2']);
     }
 }

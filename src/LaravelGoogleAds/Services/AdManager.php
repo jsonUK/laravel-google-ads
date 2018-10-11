@@ -15,7 +15,7 @@ class AdManagerService
 {
     protected $config;
 
-    public function __construct($configOverrides = null)
+    public function __construct($configOverrides = [])
     {
         $this->config = $configOverrides;
     }
@@ -68,7 +68,7 @@ class AdManagerService
     {
         $config = config('google-ads');
 
-        $config = array_merge($config, $this->config);
+        $config = array_merge_recursive($config, $this->config);
 
         return new Configuration($config);
     }

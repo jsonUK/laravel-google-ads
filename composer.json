@@ -1,5 +1,5 @@
 {
-  "name": "jsonuk/laravel-google-ads",
+  "name": "spotonlive/laravel-google-ads",
   "type": "library",
   "description": "Google Ads API for Laravel",
   "minimum-stability": "dev",
@@ -9,7 +9,7 @@
     "adwords",
     "google"
   ],
-  "homepage": "https://github.com/jsonuk/laravel-google-ads",
+  "homepage": "https://github.com/nikolajlovenhardt/laravel-google-ads",
   "license": "MIT",
   "authors": [
     {
